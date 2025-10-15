@@ -1,0 +1,50 @@
+body {
+    background-color: rgb(21, 21, 21);
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+}
+
+.item {
+    text-decoration: none;
+    color: white;
+    padding: 15px;
+    border: 1px solid white;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+    width: 30%;
+    margin-left: 35%;
+    margin-right: 35%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    background-color: white;
+    padding-inline: 20px;
+    padding-block: 5px;
+    border-radius: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .item {
+        width: 90%;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    h3 {
+        font-size: 15px
+    }
+
+    body {
+        margin-inline: 30px;
+    }
+}
