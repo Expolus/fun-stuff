@@ -204,3 +204,53 @@ doYearlyQuote();
 doDecadeQuote();
 doCenturyQuote();
 doMilleniumQuote();
+
+// Quote of the Hour and Quote of the Minute
+function doHourlyQuote() {
+    // Use year and hour as a seed so it changes each hour
+    let now = new Date();
+    let seed = now.getFullYear() * 100 + (now.getHours() + 1); // +1 to reduce collisions with year-only
+    let randomValue = pseudoRandom(seed);
+    let index = Math.floor(randomValue * quotes.length);
+    const el = document.getElementById("hourly-quote");
+    if (el) el.textContent = quotes[index];
+}
+
+function doMinuteQuote() {
+    // Use year, month, day, hour, minute as seed so it changes every minute
+    let now = new Date();
+    let seed = now.getFullYear() * 1000000 + (now.getMonth() + 1) * 10000 + now.getDate() * 100 + now.getHours() * 10 + now.getMinutes();
+    let randomValue = pseudoRandom(seed);
+    let index = Math.floor(randomValue * quotes.length);
+    const el = document.getElementById("minute-quote");
+    if (el) el.textContent = quotes[index];
+}
+
+// Helper to align intervals to the next boundary, then set repeating interval
+function scheduleAlignedInterval(callback, intervalMs, getDelayMs) {
+    // getDelayMs() should return ms until next boundary
+    const delay = getDelayMs();
+    // run after initial delay, then every intervalMs
+    setTimeout(() => {
+        try { callback(); } catch (e) { console.error(e); }
+        setInterval(() => {
+            try { callback(); } catch (e) { console.error(e); }
+        }, intervalMs);
+    }, delay);
+}
+
+// Run immediately, then schedule aligned updates
+doHourlyQuote();
+doMinuteQuote();
+
+// Schedule minute: align to start of next minute
+scheduleAlignedInterval(doMinuteQuote, 60 * 1000, () => {
+    const now = new Date();
+    return 60 * 1000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+});
+
+// Schedule hour: align to start of next hour
+scheduleAlignedInterval(doHourlyQuote, 60 * 60 * 1000, () => {
+    const now = new Date();
+    return (60 * 60 * 1000) - (now.getMinutes() * 60 * 1000 + now.getSeconds() * 1000 + now.getMilliseconds());
+});
