@@ -243,6 +243,44 @@ function scheduleAlignedInterval(callback, intervalMs, getDelayMs) {
 doHourlyQuote();
 doMinuteQuote();
 
+// Quote of the Second and Millisecond
+function doSecondQuote() {
+    let now = new Date();
+    // seed includes year, month, day, hour, minute, second
+    let seed = now.getFullYear() * 100000000 + (now.getMonth() + 1) * 1000000 + now.getDate() * 10000 + now.getHours() * 100 + now.getMinutes() * 10 + now.getSeconds();
+    let randomValue = pseudoRandom(seed);
+    let index = Math.floor(randomValue * quotes.length);
+    const el = document.getElementById("second-quote");
+    if (el) el.textContent = quotes[index];
+}
+
+function doMillisecondQuote() {
+    // Use high resolution timestamp to vary per millisecond
+    let now = new Date();
+    let ms = now.getMilliseconds();
+    // seed with second + millisecond + other date parts to reduce collisions
+    let seed = now.getFullYear() * 10000000000 + (now.getMonth() + 1) * 100000000 + now.getDate() * 1000000 + now.getHours() * 10000 + now.getMinutes() * 100 + now.getSeconds() * 10 + ms;
+    let randomValue = pseudoRandom(seed);
+    let index = Math.floor(randomValue * quotes.length);
+    const el = document.getElementById("millisecond-quote");
+    if (el) el.textContent = quotes[index];
+}
+
+// Align and schedule second updates
+doSecondQuote();
+scheduleAlignedInterval(doSecondQuote, 1000, () => {
+    const now = new Date();
+    return 1000 - (now.getMilliseconds());
+});
+
+// Millisecond updates: run immediately and then use a tight interval.
+// Note: browsers may throttle very short intervals when inactive.
+doMillisecondQuote();
+// use setInterval at 1ms; alignment to exact ms is best-effort in JS
+setInterval(() => {
+    try { doMillisecondQuote(); } catch (e) { console.error(e); }
+}, 1);
+
 // Schedule minute: align to start of next minute
 scheduleAlignedInterval(doMinuteQuote, 60 * 1000, () => {
     const now = new Date();
