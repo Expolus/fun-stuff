@@ -12,13 +12,12 @@ body {
     border: 1px solid white;
     border-radius: 10px;
     transition: background-color 0.3s ease;
-    width: 30%;
-    margin-left: 35%;
-    margin-right: 35%;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    width: 33vw;
+    margin: 20px auto;
     display: block;
+    text-align: center;
 }
+
 
 a {
     text-decoration: none;
@@ -29,7 +28,7 @@ a {
     border-radius: 10px;
 }
 
-@media only screen and (max-width: 600px) {
+@media (max-width: 600px) {
     .item {
         width: 90%;
         margin-left: 0;
