@@ -20,8 +20,8 @@ body {
 
 /* Prevent the millisecond-quote from causing layout jumps by giving it a stable min-height */
 #millisecond-quote {
-    /* Estimate height for ~5 lines of text on most screens */
-    min-height: 5.6em;
+    /* Estimate height for ~8 lines of text on most screens */
+    min-height: 8.6em;
     line-height: 1.2em;
     display: block;
     word-wrap: break-word;
